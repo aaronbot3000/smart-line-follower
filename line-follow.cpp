@@ -10,10 +10,10 @@ int main() {
 	namedWindow("Processed", CV_WINDOW_KEEPRATIO);
 	namedWindow("canny", CV_WINDOW_KEEPRATIO);
 	namedWindow("lines", CV_WINDOW_KEEPRATIO);
+	init_outimg();
 #endif
 
 	init_camera();
-	init_outimg();
 
 	int i = 0;
 
