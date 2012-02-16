@@ -13,7 +13,7 @@ void init_camera() {
 
 void grab_frame() {
 	camera >> cap;
-	cap = imread("testline.jpg");
+	//cap = imread("testline.jpg");
 	resize(cap, resized, Size(COLS, ROWS));
 }
 

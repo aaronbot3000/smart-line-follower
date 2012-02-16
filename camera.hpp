@@ -9,8 +9,8 @@
 #define CAP_COLS 640
 #define CAP_ROWS 480
 
-#define COLS 320
-#define ROWS 240
+#define COLS 160
+#define ROWS 120
 
 #define GAUSSIAN_SIZE  9
 #define GAUSSIAN_SIGMA 3
