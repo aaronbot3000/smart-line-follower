@@ -13,7 +13,6 @@ void init_camera() {
 
 void grab_frame() {
 	camera >> cap;
-	//cap = imread("testline.jpg");
 	resize(cap, resized, Size(COLS, ROWS));
 }
 
@@ -24,7 +23,6 @@ void process_frame() {
 			Size(GAUSSIAN_SIZE, GAUSSIAN_SIZE), GAUSSIAN_SIGMA);
 	Canny(processed, canny, 
 			CANNY_HIGH, CANNY_LOW, CANNY_APETURE);
-	//threshold(processed, canny, 128, 255, THRESH_BINARY);
 }
 
 Mat grab_processed_frame() {

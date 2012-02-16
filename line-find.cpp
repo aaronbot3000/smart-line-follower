@@ -4,11 +4,9 @@ static vector<vector<Point> > contours;
 static vector<vector<Point> > lines;
 static vector<vector<Point> >::iterator it;
 
+#ifdef __x86_64
 static Mat outimg;
-
-void init_outimg() {
-	outimg = Mat(240, 320, CV_8UC1);
-}
+#endif
 
 void get_lines(Mat input) {
 	// clear old contours
@@ -21,6 +19,11 @@ void get_lines(Mat input) {
 	}
 }
 
+#ifdef __x86_64
+void init_outimg() {
+	outimg = Mat(120, 160, CV_8UC1);
+}
+
 Mat get_line_image() {
 	Scalar color(255, 255, 255);
 	Scalar black(0, 0, 0);
@@ -28,5 +31,4 @@ Mat get_line_image() {
 	drawContours(outimg, lines, -1, color);
 	return outimg;
 }
-
-
+#endif
