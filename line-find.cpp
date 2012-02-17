@@ -14,10 +14,10 @@ void get_lines(Mat input) {
 	contours.clear();
 	clean_lines.clear();
 	findContours(input, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+	vector<vector<Point> >::iterator it;
 
 #ifdef __x86_64
 	lines.clear();
-	vector<vector<Point> >::iterator it;
 	for (it = contours.begin() ; it < contours.end(); it++) {
 		lines.push_back(vector<Point>());
 		approxPolyDP(*it, lines.back(), APPROX_EPSILON, false);
