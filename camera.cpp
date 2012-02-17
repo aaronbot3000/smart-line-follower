@@ -5,20 +5,21 @@ VideoCapture camera(0);
 Mat cap, resized, processed, canny;
 
 void init_camera() {
-	cap			= Mat(CAP_ROWS, CAP_COLS, CV_8UC3);
-	resized		= Mat(ROWS, COLS, CV_8UC3);
+	cap			= Mat(ROWS, COLS, CV_8UC3);
 	processed	= Mat(ROWS, COLS, CV_8UC1);
 	canny		= Mat(ROWS, COLS, CV_8UC1);
+
+	camera.set(CV_CAP_PROP_FRAME_WIDTH, COLS);
+	camera.set(CV_CAP_PROP_FRAME_HEIGHT, ROWS);
 }
 
 void grab_frame() {
 	camera >> cap;
-	resize(cap, resized, Size(COLS, ROWS));
 }
 
 void process_frame() {
 	static const int fromTo[] = {2, 0};
-	mixChannels(&resized, 1, &processed, 1, fromTo, 1);
+	mixChannels(&cap, 1, &processed, 1, fromTo, 1);
 	GaussianBlur(processed, processed, 
 			Size(GAUSSIAN_SIZE, GAUSSIAN_SIZE), GAUSSIAN_SIGMA);
 	Canny(processed, canny, 

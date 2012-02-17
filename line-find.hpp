@@ -5,6 +5,8 @@
 #include <vector>
 #include <iostream>
 
+#include "camera.hpp"
+
 #define APPROX_EPSILON 10
 
 using namespace cv;

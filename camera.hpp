@@ -6,9 +6,6 @@
 
 #include <stdio.h>
 
-#define CAP_COLS 640
-#define CAP_ROWS 480
-
 #define COLS 160
 #define ROWS 120
 

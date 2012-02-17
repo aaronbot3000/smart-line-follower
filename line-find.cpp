@@ -21,7 +21,7 @@ void get_lines(Mat input) {
 
 #ifdef __x86_64
 void init_outimg() {
-	outimg = Mat(120, 160, CV_8UC1);
+	outimg = Mat(ROWS, COLS, CV_8UC1);
 }
 
 Mat get_line_image() {

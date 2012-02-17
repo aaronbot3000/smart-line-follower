@@ -3,13 +3,13 @@
 extern Mat cap, resized, processed, canny;
 int main() {
 	Mat frame;
+
 #ifdef __x86_64
 	Mat lines;
-	namedWindow("Raw", CV_WINDOW_KEEPRATIO);
-	namedWindow("Resized", CV_WINDOW_KEEPRATIO);
-	namedWindow("Processed", CV_WINDOW_KEEPRATIO);
-	namedWindow("canny", CV_WINDOW_KEEPRATIO);
-	namedWindow("lines", CV_WINDOW_KEEPRATIO);
+	namedWindow("Raw");
+	namedWindow("Processed");
+	namedWindow("canny");
+	namedWindow("lines");
 	init_outimg();
 #endif
 
@@ -20,10 +20,10 @@ int main() {
 	while (1) {
 		frame = grab_processed_frame();
 		get_lines(frame);
+
 #ifdef __x86_64
 		lines = get_line_image();
 		imshow("Raw", cap);
-		imshow("Resized", resized);
 		imshow("Processed", processed);
 		imshow("canny", canny);
 		imshow("lines", lines);
