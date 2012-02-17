@@ -8,6 +8,10 @@
 #include "camera.hpp"
 
 #define APPROX_EPSILON 10
+#define PI 3.14159265
+
+#define THETA_THRESHOLD PI / 8
+#define MIN_MAGN 10
 
 using namespace cv;
 using namespace std;
@@ -15,8 +19,8 @@ using namespace std;
 void get_lines(Mat input);
 
 #ifdef __x86_64
-void init_outimg();
-Mat get_line_image();
+void get_line_image(Mat i);
+void draw_found_lines(Mat i);
 #endif
 
 #endif

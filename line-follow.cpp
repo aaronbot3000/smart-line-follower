@@ -1,16 +1,18 @@
 #include "line-follow.hpp"
 
+#ifdef __x86_64
 extern Mat cap, resized, processed, canny;
+#endif
+
 int main() {
 	Mat frame;
 
 #ifdef __x86_64
-	Mat lines;
-	namedWindow("Raw");
-	namedWindow("Processed");
-	namedWindow("canny");
-	namedWindow("lines");
-	init_outimg();
+	Mat outdisplay(ROWS, COLS, CV_8UC3);
+	namedWindow("Raw", CV_WINDOW_KEEPRATIO);
+	namedWindow("Processed", CV_WINDOW_KEEPRATIO);
+	namedWindow("canny", CV_WINDOW_KEEPRATIO);
+	namedWindow("lines", CV_WINDOW_KEEPRATIO);
 #endif
 
 	init_camera();
@@ -22,11 +24,12 @@ int main() {
 		get_lines(frame);
 
 #ifdef __x86_64
-		lines = get_line_image();
+		get_line_image(outdisplay);
+		draw_found_lines(outdisplay);
 		imshow("Raw", cap);
 		imshow("Processed", processed);
 		imshow("canny", canny);
-		imshow("lines", lines);
+		imshow("lines", outdisplay);
 
 		if (waitKey(20) == 'e') {
 			break;

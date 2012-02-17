@@ -15,6 +15,7 @@ void init_camera() {
 
 void grab_frame() {
 	camera >> cap;
+	//cap = imread("testline2.png");
 }
 
 void process_frame() {
