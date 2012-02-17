@@ -69,18 +69,29 @@ void get_lines(Mat input) {
 				vector<Scalar_<float> >::iterator itt = clean_lines.begin();
 				bool found = 0;
 				for (; itt < clean_lines.end(); itt++) {
-					float tt = (*itt)[0];
-					float ww = (*itt)[3];
-					if (fabs(tt/ww - theta) < THETA_THRESHOLD) {
-						(*itt)[0] += theta * magn;
-						(*itt)[1] += xc * magn;
-						(*itt)[2] += yc * magn;
-						(*itt)[3] += magn;
+					float testtheta = (*itt)[0] / (*itt)[3];
+					if (fabs(testtheta - theta) < THETA_THRESHOLD) {
+						found = 1;
+						break;
+					}
+					if (fabs(testtheta - (theta + PI)) < THETA_THRESHOLD) {
+						theta += PI;
+						found = 1;
+						break;
+					}
+					if (fabs(testtheta - (theta - PI)) < THETA_THRESHOLD) {
+						theta -= PI;
 						found = 1;
 						break;
 					}
 				}
-				if (!found) {
+				if (found) {
+					(*itt)[0] += theta * magn;
+					(*itt)[1] += xc * magn;
+					(*itt)[2] += yc * magn;
+					(*itt)[3] += magn;
+				}
+				else {
 					Scalar newpoint(theta * magn,
 							xc * magn,
 							yc * magn,
@@ -111,7 +122,7 @@ void draw_found_lines(Mat i) {
 		Point start(xc - 100 * cos(theta), yc - 100 * sin(theta));
 		Point end(xc + 100 * cos(theta), yc + 100 * sin(theta));
 		line(i, start, end, color);
-		//printf("%f, at %d %d to %d %d\n", theta, start.x, start.y, end.x, end.y);
+		printf("%f, at %d %d to %d %d\n", theta, start.x, start.y, end.x, end.y);
 	}
 }
 	
