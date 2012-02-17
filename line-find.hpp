@@ -17,6 +17,7 @@ using namespace cv;
 using namespace std;
 
 void get_lines(Mat input);
+void collect_similar_lines();
 
 #ifdef __x86_64
 void get_line_image(Mat i);
