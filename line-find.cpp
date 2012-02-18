@@ -21,13 +21,13 @@ void get_lines(Mat input) {
 	lines.clear();
 	for (it = contours.begin() ; it < contours.end(); it++) {
 		lines.push_back(vector<Point>());
-		approxPolyDP(*it, lines.back(), APPROX_EPSILON, false);
+		approxPolyDP(*it, lines.back(), APPROX_EPSILON, true);
 	}
 #endif
 
 	for (it = contours.begin(); it < contours.end(); it++) {
 		currentline.clear();
-		approxPolyDP(*it, currentline, APPROX_EPSILON, false);
+		approxPolyDP(*it, currentline, APPROX_EPSILON, true);
 
 		int prevx = -100, prevy = -100;
 		vector<Point>::iterator itl;

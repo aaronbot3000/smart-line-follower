@@ -7,11 +7,11 @@
 
 #include "camera.hpp"
 
-#define APPROX_EPSILON 7
+#define APPROX_EPSILON 3
 #define PI 3.14159265
 
 #define THETA_THRESHOLD PI / 8
-#define MIN_MAGN 10
+#define MIN_MAGN 40
 
 using namespace cv;
 using namespace std;
