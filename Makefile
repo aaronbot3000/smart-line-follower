@@ -1,5 +1,5 @@
 PROJ = smart-line-follower
-OBJS =  line-follow.o camera.o line-find.o #debug-interface.o
+OBJS =  line-follow.o camera.o line-find.o serial-interface.o#debug-interface.o
 
 #CC_PREFIX = /media/storage/LargeFiles/angstrom/setup-scripts/build/tmp-angstrom_2010_x-eglibc/sysroots/x86_64-linux/usr/bin/armv7a-angstrom-linux-gnueabi/arm-angstrom-linux-gnueabi-
 CC_PREFIX=
@@ -20,6 +20,9 @@ line-find.o: line-find.cpp line-find.hpp
 
 camera.o: camera.cpp camera.hpp
 	$(CC_PREFIX)$(CC) $(CFLAGS) camera.cpp
+
+serial-interface.o: serial-interface.cpp serial-interface.hpp
+	$(CC_PREFIX)$(CC) $(CFLAGS) serial-interface.cpp
 
 clean:
 	rm -rf *.o $(PROJ)
