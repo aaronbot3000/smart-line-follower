@@ -152,6 +152,34 @@ void collect_similar_lines() {
 			//printf("%f, at %d %d length %f\n", theta, xc, yc, magn);
 		}
 	}
+
+	// Dirty hack to pick out the two strongest lines
+	if (really_clean_lines.size() > 2) {
+		it1 = really_clean_lines.begin();
+		Scalar_<float> top1 = *it1;
+		it1++;
+		Scalar_<float> top2 = *it1;
+		it1++;
+
+		if (top2[3] > top1[3]) {
+			Scalar_<float> temp = top1;
+			top1 = top2;
+			top2 = temp;
+		}
+
+		for (; it1 < really_clean_lines.end(); it1++) {
+			if ((*it1)[3] > top1[3]) {
+				top2 = top1;
+				top1 = (*it1);
+			}
+			else if ((*it1)[3] > top2[3]) {
+				top2 = (*it1);
+			}
+		}
+		really_clean_lines.clear();
+		really_clean_lines.push_back(top1);
+		really_clean_lines.push_back(top2);
+	}
 }
 
 #ifdef __x86_64

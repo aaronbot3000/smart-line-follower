@@ -12,7 +12,7 @@
 #define GAUSSIAN_SIZE  9
 #define GAUSSIAN_SIGMA 3
 
-#define CANNY_HIGH 70
+#define CANNY_HIGH 50
 #define CANNY_LOW  30
 
 #define CANNY_APETURE 3

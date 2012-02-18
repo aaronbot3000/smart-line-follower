@@ -1,6 +1,6 @@
 #include "camera.hpp"
 
-VideoCapture camera(0);
+VideoCapture camera(1);
 
 Mat cap, resized, processed, canny;
 

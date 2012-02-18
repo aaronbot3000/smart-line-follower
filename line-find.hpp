@@ -7,7 +7,7 @@
 
 #include "camera.hpp"
 
-#define APPROX_EPSILON 10
+#define APPROX_EPSILON 7
 #define PI 3.14159265
 
 #define THETA_THRESHOLD PI / 8
