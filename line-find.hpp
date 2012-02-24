@@ -11,12 +11,12 @@
 #define PI 3.14159265
 
 #define THETA_THRESHOLD PI / 8
-#define MIN_MAGN 40
+#define MIN_MAGN 30
 
 using namespace cv;
 using namespace std;
 
-void get_lines(Mat input);
+vector<Scalar_<float> > get_lines(Mat input);
 void collect_similar_lines();
 
 #ifdef __x86_64

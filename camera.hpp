@@ -10,9 +10,11 @@
 #define ROWS 120
 
 #define GAUSSIAN_SIZE  9
-#define GAUSSIAN_SIGMA 3
+#define GAUSSIAN_SIGMA 9
 
-#define CANNY_HIGH 50
+#define THRESHOLD_LVL 170
+
+#define CANNY_HIGH 70
 #define CANNY_LOW  10
 
 #define CANNY_APETURE 3

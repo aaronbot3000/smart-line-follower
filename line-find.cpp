@@ -10,7 +10,7 @@ static vector<Point> currentline;
 static vector<vector<Point> > lines;
 #endif
 
-void get_lines(Mat input) {
+vector<Scalar_<float> > get_lines(Mat input) {
 	// clear old contours and lines
 	contours.clear();
 	clean_lines.clear();
@@ -105,6 +105,7 @@ void get_lines(Mat input) {
 	}
 
 	collect_similar_lines();
+	return really_clean_lines;
 }
 
 void collect_similar_lines() {

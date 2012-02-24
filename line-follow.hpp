@@ -5,6 +5,8 @@
 
 #include "camera.hpp"
 #include "line-find.hpp"
+#include "commands.hpp"
+#include "serial-interface.hpp"
 
 using namespace cv;
 

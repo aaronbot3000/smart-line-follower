@@ -11,6 +11,7 @@ void init_camera() {
 
 	camera.set(CV_CAP_PROP_FRAME_WIDTH, COLS);
 	camera.set(CV_CAP_PROP_FRAME_HEIGHT, ROWS);
+	//camera.set(CV_CAP_PROP_CONTRAST, 1);
 }
 
 void grab_frame() {
@@ -19,10 +20,11 @@ void grab_frame() {
 }
 
 void process_frame() {
-	static const int fromTo[] = {2, 0};
+	static const int fromTo[] = {1, 0};
 	mixChannels(&cap, 1, &processed, 1, fromTo, 1);
 	GaussianBlur(processed, processed, 
 			Size(GAUSSIAN_SIZE, GAUSSIAN_SIZE), GAUSSIAN_SIGMA);
+	threshold(processed, processed, THRESHOLD_LVL, 255, CV_THRESH_BINARY);
 	Canny(processed, canny, 
 			CANNY_HIGH, CANNY_LOW, CANNY_APETURE);
 }
