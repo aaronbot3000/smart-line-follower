@@ -154,7 +154,7 @@ void collect_similar_lines() {
 		}
 	}
 
-	// Dirty hack to pick out the two strongest lines
+	// Pick out the two strongest lines
 	if (really_clean_lines.size() > 2) {
 		it1 = really_clean_lines.begin();
 		Scalar_<float> top1 = *it1;

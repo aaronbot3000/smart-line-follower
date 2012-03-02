@@ -11,7 +11,7 @@
 #define SERIAL_PORT "/dev/ttyUSB0"
 
 char* open_serial();
-int read_serial();
+char read_serial();
 void write_serial(char* data);
 
 void send_start_message();

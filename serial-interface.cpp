@@ -25,9 +25,18 @@ char* open_serial() {
 	return ibuf;
 }
 
-int read_serial() {
+char read_serial() {
+	char ret = 0;
+	int ind = 0;
+
 	memset(ibuf, 0, sizeof(ibuf));
-	return read(fd, ibuf, sizeof(char) * sizeof(ibuf));
+	read(fd, ibuf, sizeof(char) * sizeof(ibuf));
+
+	// return last non-null character if it exists
+	while (ibuf[ind]) {
+		ret = ibuf[ind++];
+	}
+	return ret;
 }
 
 void write_serial(char* data) {

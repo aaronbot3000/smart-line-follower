@@ -1,6 +1,10 @@
 #include "camera.hpp"
 
+#ifdef __x86_64
 VideoCapture camera(1);
+#elif
+VideoCapture camera(0);
+#endif
 
 Mat cap, resized, processed, canny;
 
