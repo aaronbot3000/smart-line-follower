@@ -71,7 +71,7 @@ vector<Scalar_<float> > get_lines(Mat input) {
 			vector<Scalar_<float> >::iterator itt = clean_lines.begin();
 			bool found = 0;
 			for (; itt < clean_lines.end(); itt++) {
-				float testtheta = (*itt)[0] / (*itt)[3];
+				float testtheta = (*itt)[THETA] / (*itt)[MAGNITUDE];
 				if (fabs(testtheta - theta) < THETA_THRESHOLD) {
 					found = 1;
 					break;
@@ -88,10 +88,10 @@ vector<Scalar_<float> > get_lines(Mat input) {
 				}
 			}
 			if (found) {
-				(*itt)[0] += theta * magn;
-				(*itt)[1] += xc * magn;
-				(*itt)[2] += yc * magn;
-				(*itt)[3] += magn;
+				(*itt)[THETA] += theta * magn;
+				(*itt)[CENTER_X] += xc * magn;
+				(*itt)[CENTER_Y] += yc * magn;
+				(*itt)[MAGNITUDE] += magn;
 			}
 			else {
 				Scalar newpoint(theta * magn,
@@ -120,12 +120,12 @@ void collect_similar_lines() {
 			continue;
 		}
 
-		float theta = line[0]/line[3];
+		float theta = line[THETA]/line[MAGNITUDE];
 
 		bool found = 0;
 		vector<Scalar_<float> >::iterator itr;
 		for (itr = really_clean_lines.begin(); itr < really_clean_lines.end(); itr++) {
-			float testtheta = (*itr)[0] / (*itr)[3];
+			float testtheta = (*itr)[THETA] / (*itr)[MAGNITUDE];
 
 			if (fabs(testtheta - theta) < THETA_THRESHOLD) {
 				found = 1;
@@ -143,10 +143,10 @@ void collect_similar_lines() {
 			}
 		}
 		if (found) {
-			(*itr)[0] += theta * line[3];
-			(*itr)[1] += line[1];
-			(*itr)[2] += line[2];
-			(*itr)[3] += line[3];
+			(*itr)[THETA] += theta * line[MAGNITUDE];
+			(*itr)[CENTER_X] += line[CENTER_X];
+			(*itr)[CENTER_Y] += line[CENTER_Y];
+			(*itr)[MAGNITUDE] += line[MAGNITUDE];
 		}
 		else {
 			really_clean_lines.push_back(line);
@@ -162,18 +162,18 @@ void collect_similar_lines() {
 		Scalar_<float> top2 = *it1;
 		it1++;
 
-		if (top2[3] > top1[3]) {
+		if (top2[MAGNITUDE] > top1[MAGNITUDE]) {
 			Scalar_<float> temp = top1;
 			top1 = top2;
 			top2 = temp;
 		}
 
 		for (; it1 < really_clean_lines.end(); it1++) {
-			if ((*it1)[3] > top1[3]) {
+			if ((*it1)[MAGNITUDE] > top1[MAGNITUDE]) {
 				top2 = top1;
 				top1 = (*it1);
 			}
-			else if ((*it1)[3] > top2[3]) {
+			else if ((*it1)[MAGNITUDE] > top2[MAGNITUDE]) {
 				top2 = (*it1);
 			}
 		}
@@ -196,9 +196,9 @@ void draw_found_lines(Mat i) {
 	printf("size %lu\n", really_clean_lines.size());
 	vector<Scalar_<float> >::iterator itt = really_clean_lines.begin();
 	for (; itt < really_clean_lines.end(); itt++) {
-		float theta = (*itt)[0] / (*itt)[3];
-		float xc    = (*itt)[1] / (*itt)[3];
-		float yc    = (*itt)[2] / (*itt)[3];
+		float theta = (*itt)[THETA] / (*itt)[MAGNITUDE];
+		float xc    = (*itt)[CENTER_X] / (*itt)[MAGNITUDE];
+		float yc    = (*itt)[CENTER_Y] / (*itt)[MAGNITUDE];
 		Point start(xc - 100 * cos(theta), yc - 100 * sin(theta));
 		Point end(xc + 100 * cos(theta), yc + 100 * sin(theta));
 		line(i, start, end, color);

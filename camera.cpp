@@ -2,7 +2,7 @@
 
 #ifdef __x86_64
 VideoCapture camera(1);
-#elif
+#else
 VideoCapture camera(0);
 #endif
 

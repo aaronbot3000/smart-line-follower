@@ -29,9 +29,10 @@ int main() {
 		command = read_serial();
 		if (command) {
 			cout << "received stuff: " << command << endl;
-			if (command == 'a') { // Get line data
+			if (command == GET_LINE_DATA) { // Get line data
 				if (lines.size() == 1) { // Tracking one line
-					float xpos = lines[0][1] / lines[0][3];
+					float xpos = lines[0][CENTER_X] / lines[0][MAGNITUDE];
+					float angle = lines[0][THETA] / lines[0][MAGNITUDE];
 					//float ypos = lines[0][2] / lines[0][3];
 					int error = ((xpos - (COLS / 2)) / (COLS / 2)) * 255;
 
@@ -42,9 +43,16 @@ int main() {
 					else
 						pic_com[0] = CONTINUE;
 					pic_com[1] = (unsigned char)abs(error);
-					pic_com[2] = 'g';
+					if (angle < 0)
+						pic_com[2] = (unsigned char)(-angle * 128 / PI);
+					else
+						pic_com[2] = (unsigned char)(255 - angle * 128 / PI);
 					printf("error = %d\n", (int)((unsigned char)pic_com[1]));
+					printf("angle = %u\n", pic_com[2]);
 					write_serial(pic_com);
+				}
+				if (lines.size() >= 2) { // Two lines
+					
 				}
 			}
 		}
