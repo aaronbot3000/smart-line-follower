@@ -33,6 +33,7 @@ int main() {
 				if (!track_two_lines(lines)) {
 					if (!track_one_line(lines))
 						pic_com[0] = NO_LINE;
+				}
 			}
 			if (command == NUM_LINES_FOUND) {
 				pic_com[0] = lines.size();
