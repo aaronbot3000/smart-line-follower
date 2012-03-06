@@ -13,4 +13,8 @@
 #define GET_LINE_DATA 'a'
 #define NUM_LINES_FOUND 'b'
 
+bool track_one_line(Vector<Scalar_<float> > lines);
+// Returns false if we need to revert to one line tracking
+bool track_two_lines(Vector<Scalar_<float> > lines);
+
 #endif

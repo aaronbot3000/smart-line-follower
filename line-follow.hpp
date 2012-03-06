@@ -10,4 +10,6 @@
 
 using namespace cv;
 
+#define T_THRESH 20 //pixels
+
 #endif

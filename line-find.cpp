@@ -154,12 +154,14 @@ void collect_similar_lines() {
 		}
 	}
 
+	Scalar_<float> top1;
+	Scalar_<float> top2;
 	// Pick out the two strongest lines
 	if (really_clean_lines.size() > 2) {
 		it1 = really_clean_lines.begin();
-		Scalar_<float> top1 = *it1;
+		top1 = *it1;
 		it1++;
-		Scalar_<float> top2 = *it1;
+		top2 = *it1;
 		it1++;
 
 		if (top2[MAGNITUDE] > top1[MAGNITUDE]) {
@@ -177,9 +179,25 @@ void collect_similar_lines() {
 				top2 = (*it1);
 			}
 		}
-		really_clean_lines.clear();
 		really_clean_lines.push_back(top1);
 		really_clean_lines.push_back(top2);
+	}
+	
+	if (really_clean_lines.size() > 1) {
+		// Sort the lines based on theta
+		top1 = really_clean_lines[0];
+		top2 = really_clean_lines[1];
+
+
+		really_clean_lines.clear();
+		if (fabs(top1[THETA] / top1[MAGNITUDE]) > fabs(top2[THETA] / top2[MAGNITUDE])) {
+			really_clean_lines.push_back(top1);
+			really_clean_lines.push_back(top2);
+		}
+		else {
+			really_clean_lines.push_back(top2);
+			really_clean_lines.push_back(top1);
+		}
 	}
 }
 

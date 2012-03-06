@@ -4,9 +4,9 @@
 extern Mat cap, resized, processed, canny;
 #endif
 
+static char pic_com[3];
 int main() {
 	Mat frame;
-	char pic_com[3];
 	char command;
 
 	open_serial();
@@ -30,34 +30,32 @@ int main() {
 		if (command) {
 			cout << "received stuff: " << command << endl;
 			if (command == GET_LINE_DATA) { // Get line data
-				if (lines.size() == 1) { // Tracking one line
-					float xpos = lines[0][CENTER_X] / lines[0][MAGNITUDE];
-					float angle = lines[0][THETA] / lines[0][MAGNITUDE];
-					//float ypos = lines[0][2] / lines[0][3];
-					int error = ((xpos - (COLS / 2)) / (COLS / 2)) * 255;
-
-					if (error < 0)
-						pic_com[0] = LEFT;
-					else if (error > 0)
-						pic_com[0] = RIGHT;
-					else
-						pic_com[0] = CONTINUE;
-					pic_com[1] = (unsigned char)abs(error);
-					if (angle < 0)
-						pic_com[2] = (unsigned char)(-angle * 128 / PI);
-					else
-						pic_com[2] = (unsigned char)(255 - angle * 128 / PI);
-					printf("error = %d\n", (int)((unsigned char)pic_com[1]));
-					printf("angle = %u\n", pic_com[2]);
+				if (!track_two_lines(lines)) {
+					if (track_one_line(lines))
+						write_serial(pic_com);
+				}
+				else
 					write_serial(pic_com);
-				}
-				if (lines.size() >= 2) { // Two lines
-					
-				}
 			}
 		}
 
 #ifdef __x86_64
+		if (!track_two_lines(lines))
+			if (!track_one_line(lines))
+				pic_com[0] = 0;
+
+		if (pic_com[0] == LEFT)
+			printf("LEFT\n");
+		if (pic_com[0] == RIGHT)
+			printf("RIGHT\n");
+		if (pic_com[0] == CONTINUE)
+			printf("CONTINUE\n");
+		if (pic_com[0] == FULL_LEFT_TURN)
+			printf("FULL_LEFT_TURN\n");
+		if (pic_com[0] == FULL_RIGHT_TURN)
+			printf("FULL_RIGHT_TURN\n");
+		if (pic_com[0] == FOUND_T)
+			printf("FOUND_T\n");
 		get_line_image(outdisplay);
 		draw_found_lines(outdisplay);
 		imshow("Raw", cap);
@@ -78,4 +76,63 @@ int main() {
 	}
 
 	return 0;
+}
+
+bool track_one_line(Vector<Scalar_<float> > lines) {
+	if (lines.size() < 1) {
+		return false;
+	}
+	// Tracking one line
+	float xpos = lines[0][CENTER_X] / lines[0][MAGNITUDE];
+	float angle = lines[0][THETA] / lines[0][MAGNITUDE];
+	//float ypos = lines[0][2] / lines[0][3];
+	int error = ((xpos - (COLS / 2)) / (COLS / 2)) * 255;
+
+	if (error < 0)
+		pic_com[0] = LEFT;
+	else if (error > 0)
+		pic_com[0] = RIGHT;
+	else
+		pic_com[0] = CONTINUE;
+
+	// Theta = PI is vertical
+	// Positive is left
+	// Negative is right
+	pic_com[1] = (unsigned char)abs(error);
+	if (angle < 0) {
+		pic_com[2] = (unsigned char)(-angle * 128 / (PI / 2));
+	}
+	else
+		pic_com[2] = (unsigned char)(255 - angle * 128 / (PI / 2));
+
+	printf("error = %d\n", (int)((unsigned char)pic_com[1]));
+	printf("angle = %u\n", (unsigned char)pic_com[2]);
+	return true;
+}
+
+bool track_two_lines(Vector<Scalar_<float> > lines) {
+	if (lines.size() < 2) {
+		return false;
+	}
+	float xpos1 = lines[0][CENTER_X] / lines[0][MAGNITUDE];
+	float xpos2 = lines[1][CENTER_X] / lines[1][MAGNITUDE];
+
+	float ypos1 = lines[0][CENTER_Y] / lines[0][MAGNITUDE];
+	float ypos2 = lines[1][CENTER_Y] / lines[1][MAGNITUDE];
+	if (fabs(xpos1 - xpos2) < T_THRESH) {// This is a T
+		pic_com[0] = FOUND_T;
+		return true;
+	}
+	if (ypos1 < ypos2) {
+		printf("ypos1 = %f ypos2 = %f\n", ypos1, ypos2);
+		return false;
+	}
+	if (xpos1 > xpos2) { // This is a corner left turn
+		pic_com[0] = FULL_LEFT_TURN;
+		return true;
+	}
+	else { // This is a corner right turn
+		pic_com[0] = FULL_RIGHT_TURN;
+		return true;
+	}
 }
