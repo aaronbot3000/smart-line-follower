@@ -9,6 +9,8 @@
 #define FULL_RIGHT_TURN 'l'
 #define FOUND_T 't'
 
+#define NO_LINE 'F'
+
 // Received from the PIC
 #define GET_LINE_DATA 'a'
 #define NUM_LINES_FOUND 'b'

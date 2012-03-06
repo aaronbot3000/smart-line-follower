@@ -31,12 +31,13 @@ int main() {
 			cout << "received stuff: " << command << endl;
 			if (command == GET_LINE_DATA) { // Get line data
 				if (!track_two_lines(lines)) {
-					if (track_one_line(lines))
-						write_serial(pic_com);
-				}
-				else
-					write_serial(pic_com);
+					if (!track_one_line(lines))
+						pic_com[0] = NO_LINE;
 			}
+			if (command == NUM_LINES_FOUND) {
+				pic_com[0] = lines.size();
+			}
+			write_serial(pic_com);
 		}
 
 #ifdef __x86_64
@@ -119,13 +120,13 @@ bool track_two_lines(Vector<Scalar_<float> > lines) {
 
 	float ypos1 = lines[0][CENTER_Y] / lines[0][MAGNITUDE];
 	float ypos2 = lines[1][CENTER_Y] / lines[1][MAGNITUDE];
-	if (fabs(xpos1 - xpos2) < T_THRESH) {// This is a T
-		pic_com[0] = FOUND_T;
-		return true;
-	}
 	if (ypos1 < ypos2) {
 		printf("ypos1 = %f ypos2 = %f\n", ypos1, ypos2);
 		return false;
+	}
+	if (fabs(xpos1 - xpos2) < T_THRESH) {// This is a T
+		pic_com[0] = FOUND_T;
+		return true;
 	}
 	if (xpos1 > xpos2) { // This is a corner left turn
 		pic_com[0] = FULL_LEFT_TURN;
