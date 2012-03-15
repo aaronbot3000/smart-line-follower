@@ -219,6 +219,7 @@ void draw_found_lines(Mat i) {
 		float yc    = (*itt)[CENTER_Y] / (*itt)[MAGNITUDE];
 		Point start(xc - 100 * cos(theta), yc - 100 * sin(theta));
 		Point end(xc + 100 * cos(theta), yc + 100 * sin(theta));
+		circle(i, Point(xc, yc), 3, color, 2);
 		line(i, start, end, color);
 		//printf("%f, at %d %d to %d %d\n", theta, start.x, start.y, end.x, end.y);
 	}

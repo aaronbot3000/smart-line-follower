@@ -31,13 +31,29 @@ int main() {
 			cout << "received stuff: " << command << endl;
 			if (command == GET_LINE_DATA) { // Get line data
 				if (!track_two_lines(lines)) {
-					if (!track_one_line(lines))
+					if (!track_one_line(lines)) {
 						pic_com[0] = NO_LINE;
+						pic_com[1] = 0;
+						pic_com[2] = 0;
+					}
 				}
 			}
 			if (command == NUM_LINES_FOUND) {
 				pic_com[0] = lines.size();
 			}
+
+			if (pic_com[0] == LEFT)
+				printf("LEFT\n");
+			if (pic_com[0] == RIGHT)
+				printf("RIGHT\n");
+			if (pic_com[0] == CONTINUE)
+				printf("CONTINUE\n");
+			if (pic_com[0] == FULL_LEFT_TURN)
+				printf("FULL_LEFT_TURN\n");
+			if (pic_com[0] == FULL_RIGHT_TURN)
+				printf("FULL_RIGHT_TURN\n");
+			if (pic_com[0] == FOUND_T)
+				printf("FOUND_T\n");
 			write_serial(pic_com);
 		}
 
@@ -125,6 +141,21 @@ bool track_two_lines(Vector<Scalar_<float> > lines) {
 		printf("ypos1 = %f ypos2 = %f\n", ypos1, ypos2);
 		return false;
 	}
+	if (ypos2 < 30) {
+		return false;
+	}
+
+	float xpos = lines[0][CENTER_X] / lines[0][MAGNITUDE];
+	float angle = lines[0][THETA] / lines[0][MAGNITUDE];
+	//float ypos = lines[0][2] / lines[0][3];
+	int error = ((xpos - (COLS / 2)) / (COLS / 2)) * 255;
+	pic_com[1] = (unsigned char)abs(error);
+	if (angle < 0) {
+		pic_com[2] = (unsigned char)(-angle * 128 / (PI / 2));
+	}
+	else
+		pic_com[2] = (unsigned char)(255 - angle * 128 / (PI / 2));
+
 	if (fabs(xpos1 - xpos2) < T_THRESH) {// This is a T
 		pic_com[0] = FOUND_T;
 		return true;
