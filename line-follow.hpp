@@ -10,7 +10,9 @@
 
 using namespace cv;
 
-#define T_THRESH 20 //pixels
+//#define T_THRESH 20 // pixels
+#define T_THRESH 0.6 // radians
+#define T_CROSS_MAGNITUDE 200
 
 bool track_one_line(Vector<Scalar_<float> > lines);
 // Returns false if we need to revert to one line tracking

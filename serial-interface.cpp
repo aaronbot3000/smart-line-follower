@@ -40,7 +40,7 @@ char read_serial() {
 }
 
 void write_serial(char* data) {
-	write(fd, data, 3);
+	write(fd, data, 4);
 }
 
 void playaudio(int filename) {
